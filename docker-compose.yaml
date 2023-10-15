@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  expressapp:
+    build: .
+    container_name: tokenguardian
+    ports:
+      - "80:80"
