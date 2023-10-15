@@ -1,0 +1,188 @@
+openapi: 3.0.0
+info:
+  title: Token Guardian
+  contact: {}
+  version: '1.0'
+  description: 'The Token Guardian API is a secure authentication system that employs JWT (JSON Web Tokens) for user authentication and authorization. It provides endpoints for user registration, login, profile retrieval, password updates, and account deletion.'
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register User
+      operationId: RegisterUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUserRequest'
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login User
+      operationId: LoginUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserRequest'
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+
+  /profile:
+    get:
+      tags:
+        - Profile
+      summary: Get User Profile
+      operationId: GetUserProfile
+      parameters: []
+      responses:
+        '200':
+          description: Successful retrieval of user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          headers: {}
+      deprecated: false
+      security:
+        - httpBearer: []
+
+  /profile/delete-account:
+    delete:
+      tags:
+        - Profile
+      summary: Delete User Account
+      operationId: DeleteUserAccount
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - httpBearer: []
+
+  /profile/change-password:
+    put:
+      tags:
+        - Profile
+      summary: Change Password
+      operationId: ChangePassword
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+            example:
+              currentPassword: secret
+              newPassword: new_secret
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - httpBearer: []
+
+components:
+  schemas:
+    RegisterUserRequest:
+      title: RegisterUserRequest
+      required:
+        - username
+        - email
+        - password
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        username: bob123
+        email: bob@gmail.com
+        password: secret
+
+    LoginUserRequest:
+      title: LoginUserRequest
+      required:
+        - username
+        - password
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      example:
+        username: susan123
+        password: secret
+
+    ChangePasswordRequest:
+      title: ChangePasswordRequest
+      required:
+        - currentPassword
+        - newPassword
+      type: object
+      properties:
+        old_password:
+          type: string
+        new_password:
+          type: string
+      example:
+        currentPassword: secret
+        newPassword: new_secret
+
+    UserProfile:
+      title: UserProfile
+      type: object
+      properties:
+        username:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+      example:
+        name: Susan Johnson
+        email: susan@example.com
+
+    JwtResponse:
+      title: JwtResponse
+      type: object
+      properties:
+        jwt_token:
+          type: string
+      example:
+        jwt_token: "YOUR_JWT_TOKEN_HERE"
+
+  securitySchemes:
+    httpBearer:
+      type: http
+      scheme: bearer
+
+security:
+  - httpBearer: []

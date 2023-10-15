@@ -4,7 +4,6 @@ const User = require('../User');
 
 const router = express.Router();
 
-// User Registration
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -18,8 +17,8 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// User Login
 router.post('/login', async (req, res) => {
+  
   const { username, password } = req.body;
 
   try {
@@ -27,7 +26,6 @@ router.post('/login', async (req, res) => {
     if (!user || !await user.comparePassword(password)) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
-
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY);
     res.status(200).json({ token });
   } catch (error) {
